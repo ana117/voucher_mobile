@@ -9,7 +9,8 @@ class Common {
   static Color lightBlue2 = const Color.fromRGBO(186, 232, 232, 1);
   static Color lightBlue3 = const Color.fromRGBO(44, 105, 141, 1);
 
-  static String localhost = "http://10.0.2.2";
+  static String localhost = "http://10.0.2.2:8000";
+  static String herokuURL = "https://voucher-web.herokuapp.com";
 
   static Text createWhiteText(String text) {
     return Text(
