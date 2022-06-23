@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:voucher_mobile/common.dart';
-import 'package:voucher_mobile/voucher.dart';
+import 'package:http/http.dart';
 
 class RedeemPage extends StatefulWidget {
   const RedeemPage({Key? key, required this.voucherCode}) : super(key: key);
@@ -12,19 +14,49 @@ class RedeemPage extends StatefulWidget {
 }
 
 class _RedeemPageState extends State<RedeemPage> {
-  late Future<Voucher> futureV;
+  String result = "Processing...";
+  String? error;
 
-  void _testDelay() {
-    setState(() {
-      futureV = Future.delayed(const Duration(seconds: 3), () {
-        return const Voucher("KODE", "DESC", true);
+  @override
+  void initState() {
+    super.initState();
+    _fetchVoucher();
+  }
+
+  Future<void> _fetchVoucher() async {
+    String postURL = "${Common.localhost}:8000/api/redeem";
+    Response response = await post(
+      Uri.parse(postURL),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'code': '9wwvIycRcLK8',
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        Map<String, dynamic> jsonData = jsonDecode(response.body);
+        error = jsonData['error'];
+        if (error != null) {
+          result = error!;
+          bool isUsed = jsonData['voucher']['is_used'] ?? false;
+          if (isUsed) {
+            String dateTime = jsonData['voucher']['date_used'];
+            DateTime dateUsed = DateTime.parse(dateTime).toLocal();
+            result += " on ${dateUsed.toString().substring(0, 19)}";
+          }
+        } else {
+          String description = jsonData['voucher']['description'];
+          result = 'Successfully redeemed!\n\nVoucher for\n$description';
+        }
       });
-    });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    _testDelay();
     return Scaffold(
       backgroundColor: Common.gray.withOpacity(0.4),
       body: Stack(
@@ -37,34 +69,17 @@ class _RedeemPageState extends State<RedeemPage> {
                 borderRadius: const BorderRadius.all(Radius.circular(30)),
                 color: Common.darkBlue,
               ),
-              width: MediaQuery.of(context).size.width * 0.7,
+              width: MediaQuery.of(context).size.width * 0.8,
               height: MediaQuery.of(context).size.height * 0.5,
               child: Container(
                 padding: const EdgeInsets.symmetric(
                     vertical: 20.0, horizontal: 10.0),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Common.createWhiteText(widget.voucherCode),
-                    const SizedBox(height: 15),
-                    FutureBuilder(
-                        future: futureV,
-                        builder: (context, AsyncSnapshot<Voucher> snapshot) {
-                          if (!snapshot.hasData) {
-                            return const CircularProgressIndicator();
-                          } else {
-                            Voucher data = snapshot.data!;
-                            return Column(
-                              children: [
-                                Common.createWhiteText(
-                                    "Code: ${data.code}"),
-                                Common.createWhiteText(
-                                    "Description: ${data.description}"),
-                                Common.createWhiteText(
-                                    "isUsed: ${data.status}"),
-                              ],
-                            );
-                          }
-                        }),
+                    const Expanded(child: SizedBox(),),
+                    Common.createWhiteText(result),
                     const Expanded(child: SizedBox()),
                     ElevatedButton(
                       onPressed: () {
