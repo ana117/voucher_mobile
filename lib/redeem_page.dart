@@ -24,14 +24,14 @@ class _RedeemPageState extends State<RedeemPage> {
   }
 
   Future<void> _fetchVoucher() async {
-    String postURL = "${Common.localhost}:8000/api/redeem";
+    String postURL = "${Common.herokuURL}/api/redeem";
     Response response = await post(
       Uri.parse(postURL),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'code': '9wwvIycRcLK8',
+        'code': widget.voucherCode,
       }),
     );
 
@@ -46,10 +46,13 @@ class _RedeemPageState extends State<RedeemPage> {
             String dateTime = jsonData['voucher']['date_used'];
             DateTime dateUsed = DateTime.parse(dateTime).toLocal();
             result += " on ${dateUsed.toString().substring(0, 19)}";
+            String description = jsonData['voucher']['description'];
+            result += '\n\nVoucher for\n$description';
           }
         } else {
+          result = 'Successfully redeemed!';
           String description = jsonData['voucher']['description'];
-          result = 'Successfully redeemed!\n\nVoucher for\n$description';
+          result += '\n\nVoucher for\n$description';
         }
       });
     }
