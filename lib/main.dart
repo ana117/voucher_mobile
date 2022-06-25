@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
     switch(_selectedIndex) {
       case 0:
         return const Text(
-          'Index 1: Business',
+          'Hello My Good-Lookin Employee :D',
         );
       case 1:
         return QRScanPage(onScanned);
@@ -88,8 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Common.darkBlue,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.autorenew),
-            label: 'Generate Voucher',
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.qr_code),

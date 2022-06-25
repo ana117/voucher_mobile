@@ -57,14 +57,6 @@ class QRScanPage extends StatelessWidget {
             iconSize: 32.0,
             onPressed: () => cameraController.toggleTorch(),
           ),
-          IconButton(
-            color: Colors.white,
-            icon: const Icon(Icons.money),
-            iconSize: 32.0,
-            onPressed: () => {
-              onScanned("Testing")
-            },
-          ),
         ],
       ),
     );
