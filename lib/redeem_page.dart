@@ -35,6 +35,8 @@ class _RedeemPageState extends State<RedeemPage> {
       }),
     );
 
+    if (!mounted) return;
+
     if (response.statusCode == 200) {
       setState(() {
         Map<String, dynamic> jsonData = jsonDecode(response.body);
@@ -54,6 +56,10 @@ class _RedeemPageState extends State<RedeemPage> {
           String description = jsonData['voucher']['description'];
           result += '\n\nVoucher for\n$description';
         }
+      });
+    } else {
+      setState(() {
+        result = 'Error occurred';
       });
     }
   }
