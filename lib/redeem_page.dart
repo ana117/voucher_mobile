@@ -87,20 +87,22 @@ class _RedeemPageState extends State<RedeemPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Common.createWhiteText(widget.voucherCode),
-                    const Expanded(child: SizedBox(),),
+                    const Expanded(
+                      child: SizedBox(),
+                    ),
                     Common.createWhiteText(result),
                     const Expanded(child: SizedBox()),
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Common.white,
-                        textStyle: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Common.white,
+                          textStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      child: Common.createDarkBlueText("Back")),
+                        child: Common.createDarkBlueText("Back")),
                   ],
                 ),
               ),
