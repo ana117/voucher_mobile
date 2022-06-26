@@ -58,14 +58,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _getPanel() {
-    switch(_selectedIndex) {
+    switch (_selectedIndex) {
       case 0:
         return const Text(
           'Hello My Good-Lookin Employee :D',
         );
       case 1:
         return QRScanPage(onScanned);
-  }
+    }
     return Container();
   }
 
@@ -75,14 +75,12 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Common.white,
       body: Center(
-          child: _getPanel(),
+        child: _getPanel(),
       ), // This trailing comma makes auto-formatting nicer for build methods.
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Common.darkBlue,
